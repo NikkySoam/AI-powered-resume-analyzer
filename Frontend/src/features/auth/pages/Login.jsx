@@ -1,8 +1,24 @@
 import '../auth.form.scss';
-import { Link } from 'react-router';
+import { Link,useNavigate } from 'react-router';
+import {useAuth} from '../hooks/useAuth.js'
+import { useState } from 'react';
+
 function Login() {
-    const handleSubmit = (e)=>{
+    const navigate = useNavigate();
+
+    const [email,setEmail] = useState("");
+    const [password, setPassword] = useState("")
+
+    const {handleLogin,loading} = useAuth();
+
+    const handleSubmit = async(e)=>{
         e.preventDefault();
+        await handleLogin({email,password});
+        navigate('/');
+    }
+
+    if(loading){
+        return (<main><h2>loading....</h2></main>)
     }
 
   return (
@@ -13,11 +29,15 @@ function Login() {
         <form onSubmit={handleSubmit}>
             <div className="input-group">
                 <label htmlFor="email">Email</label>
-                <input type="email" placeholder='Enter email address' id='email' name='email'/>
+                <input
+                 onChange={(e)=>setEmail(e.target.value)}
+                 type="email" placeholder='Enter email address' id='email' name='email'/>
             </div>
             <div className="input-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" placeholder='Enter password' name='password' id='password' />
+                <input
+                 onChange={(e)=>setPassword(e.target.value)}
+                 type="password" placeholder='Enter password' name='password' id='password' />
             </div>
             <button className='button primary-button'>Login</button>
         </form>

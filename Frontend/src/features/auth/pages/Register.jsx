@@ -1,7 +1,24 @@
-import { Link } from "react-router";
+import { Link,useNavigate } from "react-router";
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+
 function Register() {
-  const handleSubmit = (e)=>{
+    const navigate = useNavigate();
+
+    const [username,setUsername] = useState("")
+    const [email,setEmail] = useState("");
+    const [password, setPassword] = useState("")
+
+    const {handleRegister,loading} = useAuth();
+
+    const handleSubmit = async(e)=>{
         e.preventDefault();
+        await handleRegister({username,email,password});
+        navigate('/');
+    }
+
+    if(loading){
+        return (<main><h2>loading....</h2></main>)
     }
 
   return (
@@ -12,15 +29,21 @@ function Register() {
         <form onSubmit={handleSubmit}>
             <div className="input-group">
                 <label htmlFor="username">Username</label>
-                <input type="text" placeholder='Enter username' id='username' name='username' />
+                <input 
+                onChange={(e)=> setUsername(e.target.value)}
+                type="text" placeholder='Enter username' id='username' name='username' />
             </div>
             <div className="input-group">
                 <label htmlFor="email">Email</label>
-                <input type="email" placeholder='Enter email address' id='email' name='email'/>
+                <input
+                onChange={(e)=> setEmail(e.target.value)} 
+                type="email" placeholder='Enter email address' id='email' name='email'/>
             </div>
             <div className="input-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" placeholder='Enter password' name='password' id='password' />
+                <input
+                onChange={(e)=> setPassword(e.target.value)} 
+                type="password" placeholder='Enter password' name='password' id='password' />
             </div>
             <button className='button primary-button'>Register</button>
         </form>
