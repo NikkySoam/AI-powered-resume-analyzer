@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router";
 
 
-const Protected=({Children})=>{
+const Protected= ({children})=>{
     const {user,loading} = useAuth();
 
     if(loading){
@@ -14,7 +14,7 @@ const Protected=({Children})=>{
        return <Navigate to={'/login'}/>
     }
      
-  return Children
+  return children;
 }
 
 export default Protected
