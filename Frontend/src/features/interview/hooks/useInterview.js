@@ -2,6 +2,7 @@ import { generateReport,getAllReports,getReportById } from "../services/intervie
 import { useContext,useEffect } from "react";
 import { InterviewContext } from "../interview.context";
 import { useParams } from "react-router";
+import { generateResumePdf } from "../services/interview.api";
 
 export const useInterview = ()=>{
     const context = useContext(InterviewContext);
@@ -57,6 +58,25 @@ export const useInterview = ()=>{
         return response.interviewReports;
     }
 
+    const getResumePdf = async (interviewReportId)=>{
+        setLoading(true);
+        let response = null;
+        try {
+            response = await generateResumePdf({interviewReportId});
+            const url = window.URL.createObjectURL(new Blob([response], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `resume_${interviewId}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            
+        } catch (error) {
+            console.log("Error generating resume PDF", error);
+        }finally{
+            setLoading(false);
+        }
+    }
+
      useEffect(() => {
         if (interviewId) {
             getReportByIdHook(interviewId)
@@ -66,5 +86,5 @@ export const useInterview = ()=>{
     }, [ interviewId ])
 
     
-    return {loading, report, reports, generateReportHook, getReportByIdHook, getReports};
+    return {loading, report, reports, generateReportHook, getReportByIdHook, getReports, getResumePdf};
 }
