@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL:'http://localhost:3000',
+    baseURL: import.meta.VITE_API_URL || "",
     withCredentials:true
 })
 
@@ -31,7 +31,7 @@ export const getAllReports = async ()=>{
 }
 
 export const generateResumePdf = async ({interviewReportId})=>{
-    const response = await api.post(`api/interview/resume/pdf/${interviewReportId}`, null, {
+    const response = await api.post(`/api/interview/resume/pdf/${interviewReportId}`, null, {
         responseType:'blob'
     });
     return response.data;

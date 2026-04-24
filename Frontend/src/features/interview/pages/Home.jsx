@@ -121,7 +121,7 @@ function Home() {
                 </div>
             </div>
             
-            {/* Recent Reports List */}
+            {/* Recent Reports List
             {reports.length > 0 && (
                 <section className='recent-reports'>
                     <h2>My Recent Interview Plans</h2>
@@ -135,7 +135,7 @@ function Home() {
                         ))}
                     </ul>
                 </section>
-            )}
+            )} */}
 
             {/* Page Footer */}
             <footer className='page-footer'>
